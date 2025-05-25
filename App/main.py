@@ -22,7 +22,10 @@ def add_views(app):
         app.register_blueprint(view)
 
 def create_app(overrides={}):
-    app = Flask(__name__, static_url_path='/static')
+    instance_dir = os.path.join('/tmp', 'instance')  # writable dir
+    os.makedirs(instance_dir, exist_ok=True)
+
+    app = Flask(__name__, static_url_path='/static', instance_path=instance_dir)
     load_config(app, overrides)
     CORS(app)
     add_auth_context(app)
